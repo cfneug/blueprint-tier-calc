@@ -1,25 +1,99 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>California Blueprint Tier Deadline Calc</title>
+        <title>CA Sport Deadlines</title>
         <meta charset="utf-8" />
     </head>
     <body>
-        <label for="target_date">Target date:</label>
-        <input type="date" id="target_date" name="target_date"
-               value="2021-02-12"
-               min="2021-02-12" max="2021-12-31">
-        <br>
-        <select onchange="calcTierDeadlines(this.value)">
-            <option value="red" selected="selected">red tier</option>
-            <option value="orange" selected="selected">orange tier</option>
-            <option value="yellow" selected="selected">yellow tier</option>
+        <h3>Enter the start date and the tier or sport</h3>
+        <label for="start_date">Start date:</label>
+        <input type="date" id="start_date" name="start_date"
+            onchange="calcDeadlines()"
+            value="2021-03-15"
+            min="2021-02-12" max="2021-12-31">
+        <br><br>
+        <label for="tier">Tier or Sport:</label>
+        <select id="tier" onchange="calcDeadlines()">
+            <option value="purple" selected="selected">Purple Tier</option>
+            <option value="red">Red Tier</option>
+            <option value="orange">Orange Tier</option>
+            <option value="yellow">Yellow Tier</option>            
+            <option value="purple" >Cross Country</option>
+            <option value="purple" >Golf</option>
+            <option value="purple" >Skiing</option>
+            <option value="purple" >Snowboarding</option>
+            <option value="purple" >Swimming & Diving</option>
+            <option value="purple" >Tennis</option>
+            <option value="purple" >Track & Field</option>
+            <option value="red" >Baseball</option>
+            <option value="red" >Field Hockey</option>
+            <option value="red" >Girls Lacrosse</option>
+            <option value="red" >Softball</option>
+            <option value="orange" >Badminton</option>
+            <option value="orange" >Football</option>
+            <option value="orange" >Gymnastics</option>
+            <option value="orange" >Boys Lacrosse</option>
+            <option value="orange" >Soccer</option>
+            <option value="orange" >Volleyball</option>
+            <option value="orange" >Water Polo</option>
+            <option value="yellow" >Basketball</option>
+            <option value="yellow" >Competitive Cheerleading</option>
+            <option value="yellow" >Wrestling</option>
         </select>
+        <br><br>
+
+        <h3>Results:</h3>
+        <div id="results"></div>
   
         <script>
-            function calcTierDeadlines(tier) {
-                console.log(document.getElementById("target_date").value);
-                console.log(tier);
+            var tier_limits = {'purple':{'pr':100.0,'acr':1000.0,'hem':100.0},
+                                'red':{'pr':8.0,'acr':7.0,'hem':8.0},
+                                'orange':{'pr':5.0,'acr':4.0,'hem':5.2},
+                                'yellow':{'pr':2.0,'acr':1.0,'hem':2.1}};
+
+            var ms_per_day = 86400000 //number of milliseconds in a day
+            function backDay(date, days) {
+                return new Date(date - ms_per_day*days);
+            }
+            
+            function getPriorDayOfWeek(date, day_of_week) {
+                while (date.getDay() != day_of_week) date = backDay(date, 1);
+                return date;
+            }
+
+            function calcDeadlines() {
+                let date = new Date(document.getElementById("start_date").value);
+                let tier = document.getElementById("tier").value;
+                let html = '<h4>working backwards from '+tier+' tier...</h4>';
+                if (tier == 'purple') {
+                    html += 'County must be in purple tier by '+date.toDateString()+'<br>';
+                } else {
+                    while (tier != 'purple') {
+                        // go to prior Tuesday for announcement of tier change deadline
+                        date = getPriorDayOfWeek(date,2);
+                        html += 'County must announce '+tier+' tier by ' 
+                            + date.toDateString() + '<br>';
+
+                        // window for meeting new tier criteria
+                        let end = backDay(date,1);
+                        let start = backDay(end,14);
+                        html += 'County must meet '+tier+' criteria from ' 
+                            + start.toDateString() + ' to ' 
+                            + end.toDateString() + '<br>';
+
+                        // tier criteria
+                        html += 'Positivity Rate < '+tier_limits[tier].pr.toFixed(1);
+                        html += ', Adjusted Case Rate < '+tier_limits[tier].acr.toFixed(1);
+                        html += ' and Health Equity Metric < '+tier_limits[tier].hem.toFixed(1)+'<br><br>';
+                        if (tier == 'yellow') tier = 'orange';
+                        else if (tier == 'orange') tier = 'red';
+                        else if (tier == 'red') tier = 'purple';
+
+                        // backup 3 weeks, minus a little
+                        date = backDay(date,20);
+                    }
+                } 
+                document.getElementById("results").innerHTML = html;
             }
         </script>
     </body>
