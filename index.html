@@ -8,6 +8,13 @@
     </head>
     <body>
         <basefont face = "arial, helvetica" size = "10px">
+        <h2>CA Sport Deadlines</h2>
+        <p>A calculator that works back from a start date and required tier on that 
+           start date to generate the preceding tier deadlines assuming a 
+           best case improvement in COVID metrics.</p> 
+        <p></p>Based on <a href="https://www.cdph.ca.gov/Programs/CID/DCDC/Pages/COVID-19/COVID19CountyMonitoringOverview.aspx">CDPH rules</a> published 2/09/21.</p>
+        <p></p>Current Santa Clara County Blueprint <a href="https://www.sccgov.org/sites/covid19/Pages/blueprint-dashboard.aspx">Dashboard</a> updated Wednesdays.</p>
+        <p>This code is provided as-is with no guarantee it will preform in the desired way; please validate any results with a calendar before making any decisions.</p>
         <h3>Enter the start date and the tier or sport</h3>
         <label for="start_date">Start date:</label>
         <input type="date" id="start_date" name="start_date"
@@ -43,7 +50,7 @@
             <option value="yellow" >Competitive Cheerleading</option>
             <option value="yellow" >Wrestling</option>
         </select>
-        <br><br>
+        <br>
 
         <h3>Results:</h3>
         <div id="results"></div>
