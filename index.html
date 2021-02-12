@@ -4,8 +4,10 @@
         <title>CA Sport Deadlines</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href='./calc.css'/>
     </head>
     <body>
+        <basefont face = "arial, helvetica" size = "10px">
         <h3>Enter the start date and the tier or sport</h3>
         <label for="start_date">Start date:</label>
         <input type="date" id="start_date" name="start_date"
@@ -67,20 +69,20 @@
                 let tier = document.getElementById("tier").value;
                 let html = '<h4>working backwards from '+tier+' tier...</h4>';
                 if (tier == 'purple') {
-                    html += 'County must be in purple tier by '+date.toDateString()+'<br>';
+                    html += 'County must be in purple tier by '+date.toDateString().slice(0,-5)+'<br>';
                 } else {
                     while (tier != 'purple') {
                         // go to prior Tuesday for announcement of tier change deadline
                         date = getPriorDayOfWeek(date,2);
                         html += 'County must announce '+tier+' tier by ' 
-                            + date.toDateString() + '<br>';
+                            + date.toDateString().slice(0,-5) + '<br>';
 
                         // window for meeting new tier criteria
                         let end = backDay(date,1);
                         let start = backDay(end,14);
                         html += 'County must meet '+tier+' criteria from ' 
-                            + start.toDateString() + ' to ' 
-                            + end.toDateString() + '<br>';
+                            + start.toDateString().slice(0,-5) + ' to ' 
+                            + end.toDateString().slice(0,-5) + '<br>';
 
                         // tier criteria
                         html += 'Positivity Rate < '+tier_limits[tier].pr.toFixed(1);
