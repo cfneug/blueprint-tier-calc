@@ -9,7 +9,18 @@
         <input type="date" id="target_date" name="target_date"
                value="2021-02-12"
                min="2021-02-12" max="2021-12-31">
+        <br>
+        <select onchange="calcTierDeadlines(this.value)">
+            <option value="red" selected="selected">red tier</option>
+            <option value="orange" selected="selected">orange tier</option>
+            <option value="yellow" selected="selected">yellow tier</option>
+        </select>
+  
         <script>
+            function calcTierDeadlines(tier) {
+                console.log(document.getElementById("target_date").value);
+                console.log(tier);
+            }
         </script>
     </body>
 </html>
