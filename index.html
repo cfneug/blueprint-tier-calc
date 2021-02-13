@@ -9,12 +9,12 @@
     <body>
         <basefont face = "arial, helvetica" size = "10px">
         <h2>CA Sport Deadlines</h2>
-        <p>A calculator that works back from a start date and required tier on that 
-           start date to generate the preceding tier deadlines assuming a 
-           best case improvement in COVID metrics.</p> 
+        <p>This calculator works back from a start date and tier to generate 
+            the preceding tier deadlines assuming a 
+            best case improvement in COVID metrics.</p> 
         <p></p>Based on <a href="https://www.cdph.ca.gov/Programs/CID/DCDC/Pages/COVID-19/COVID19CountyMonitoringOverview.aspx">CDPH rules</a> published 2/09/21.</p>
-        <p></p>Current Santa Clara County Blueprint <a href="https://www.sccgov.org/sites/covid19/Pages/blueprint-dashboard.aspx">Dashboard</a> updated Wednesdays.</p>
-        <p>This code is provided as-is with no guarantee it will preform in the desired way; please validate any results with a calendar before making any decisions.</p>
+        <p></p>The Santa Clara County Blueprint <a href="https://www.sccgov.org/sites/covid19/Pages/blueprint-dashboard.aspx">Dashboard</a> is updated on Wednesdays.</p>
+        <p>This code is provided as-is with no guarantee it will perform in the desired way; please check results manually with a calendar before making any decisions.</p>
         <h3>Enter the start date and the tier or sport</h3>
         <label for="start_date">Start date:</label>
         <input type="date" id="start_date" name="start_date"
@@ -52,7 +52,6 @@
         </select>
         <br>
 
-        <h3>Results:</h3>
         <div id="results"></div>
         <script>
             var tier_limits = {'purple':{'pr':100.0,'acr':1000.0,'hem':100.0},
@@ -61,6 +60,7 @@
                                 'yellow':{'pr':2.0,'acr':1.0,'hem':2.1}};
 
             var ms_per_day = 86400000 //number of milliseconds in a day
+
             function backDay(date, days) {
                 return new Date(date - ms_per_day*days);
             }
@@ -73,7 +73,8 @@
             function calcDeadlines() {
                 let date = new Date(document.getElementById("start_date").value);
                 let tier = document.getElementById("tier").value;
-                let html = '<h4>working backwards from '+tier+' tier...</h4>';
+                let html = '<h3>Results:</h3>';
+                html += '<h4>working backwards from '+date.toDateString().slice(0,-5)+' and '+tier+' tier...</h4>';
                 if (tier == 'purple') {
                     html += 'County must be in purple tier by '+date.toDateString().slice(0,-5)+'<br>';
                 } else {
